@@ -13,7 +13,7 @@ namespace RainfallApi
         {
             var apiClient = new RainfallApiClient();
 
-            // Replace "YOUR_STATION_ID" with the desired station ID
+            // Blackpool station ID - obtained from the example in documentation
             var stationId = "577271";
 
             try
@@ -36,7 +36,8 @@ namespace RainfallApi
     public class RainfallApiClient
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://environment.data.gov.uk/flood-monitoring/id/";
+        // root
+        private const string BaseUrl = "http://environment.data.gov.uk/flood-monitoring";
 
         public RainfallApiClient()
         {
@@ -45,7 +46,11 @@ namespace RainfallApi
 
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
-            var url = $"{BaseUrl}{stationId}/readings?count={count}";
+
+            // Constructing the request URL
+            // - See API Summary Table in documentation:
+            //    'All readings for measures from a particular station'
+            var url = $"{BaseUrl}/id/stations/{stationId}/readings";
 
             var response = await _httpClient.GetAsync(url);
 
