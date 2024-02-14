@@ -21,7 +21,7 @@ namespace RainfallApi
                 var response = await apiClient.GetRainfallReadingsAsync(stationId);
 
                 Console.WriteLine($"Rainfall readings for station ID {stationId}:");
-                foreach (var reading in response.Readings)
+                foreach (var reading in response.Items)
                 {
                     Console.WriteLine($"Date: {reading.DateMeasured}, Amount: {reading.AmountMeasured}");
                 }
@@ -67,11 +67,20 @@ namespace RainfallApi
     // Define the data contract for rainfall readings
     public class RainfallReading
     {
+        [JsonProperty("@id")] 
+        public string Id { get; set; }
+
+        [JsonProperty("dateTime")]
         public DateTime DateMeasured { get; set; }
+
+        [JsonProperty("measure")] 
+        public string Measure { get; set; }
+
+        [JsonProperty("value")]
         public decimal AmountMeasured { get; set; }
     }
     public class RainfallReadingResponse
     {
-        public List<RainfallReading> Readings { get; set; }
+        public List<RainfallReading> Items { get; set; }
     }
 }
