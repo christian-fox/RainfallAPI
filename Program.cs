@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RainfallApi
 {
@@ -79,17 +79,18 @@ namespace RainfallApi
 
             var content = await response.Content.ReadAsStringAsync();
             // provide a standard new response if 'content' is null
-            return JsonConvert.DeserializeObject<RainfallReadingResponse>(content) ?? new RainfallReadingResponse(); ;
+            return JsonSerializer.Deserialize<RainfallReadingResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) 
+                ?? new RainfallReadingResponse();
         }
     }
 
     // Define the data contract for rainfall readings
     public class RainfallReading
     {
-        [JsonProperty("dateTime")]
+        [JsonPropertyName("dateTime")]
         public DateTime DateMeasured { get; set; }
 
-        [JsonProperty("value")]
+        [JsonPropertyName("value")]
         public decimal AmountMeasured { get; set; }
     }
     public class RainfallReadingResponse
